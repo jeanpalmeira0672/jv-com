@@ -62,6 +62,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="main.php#hero">Início</a></li>
                 <li><a href="main.php#products">Destaques</a></li>
                 <li><a href="main.php#categories">Categorias</a></li>
+                <li><a href="produtos.php">CRUD</a></li>
             </ul>
 
             <!-- SEARCHBAR COM ÍCONE -->

@@ -16,19 +16,20 @@ if ($termoBusca !== '') {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8" />
     <title>Resultados da Busca</title>
     <link rel="stylesheet" href="css/style2.css" />
 </head>
+
 <body>
     <header>
         <nav class="nav">
             <ul class="nav__list">
-                <li><a href="#hero">Início</a></li>
-                <li><a href="#products">Produtos</a></li>
-                <li><a href="#categories">Categorias</a></li>
-                <li><a href="contato.html">Contato</a></li>
+                <li><a href="main.php.#hero">Início</a></li>
+                <li><a href="main.php#products">Produtos</a></li>
+                <li><a href="main.php#categories">Categorias</a></li>
             </ul>
 
             <!-- FORMULÁRIO DE BUSCA -->
@@ -39,8 +40,7 @@ if ($termoBusca !== '') {
                     placeholder="Buscar notebooks..."
                     aria-label="Buscar"
                     value="<?= htmlspecialchars($termoBusca) ?>"
-                    required
-                >
+                    required>
                 <button type="submit" aria-label="Buscar">
                     <i class="fas fa-search"></i>
                 </button>
@@ -51,7 +51,7 @@ if ($termoBusca !== '') {
     </header>
 
     <main class="container" style="padding-top: 100px;">
-    <h1>Resultados para: "<?= htmlspecialchars($termoBusca) ?>"</h1>
+        <h1>Resultados para: "<?= htmlspecialchars($termoBusca) ?>"</h1>
         <!-- Botão Voltar com seta (⬅️) alinhado à esquerda -->
         <div style="text-align: left; margin-top: 1rem; margin-left: 2rem; margin-bottom: 2rem;">
             <a href="main.php" class="btn--primary">⬅️ Voltar</a>
@@ -83,4 +83,5 @@ if ($termoBusca !== '') {
     </footer>
 
 </body>
+
 </html>

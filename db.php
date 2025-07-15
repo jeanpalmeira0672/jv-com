@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'projeto_jv';
+$db   = 'fe';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';

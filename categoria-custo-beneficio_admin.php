@@ -13,7 +13,7 @@ $perPage   = 18;
 $offset    = ($page - 1) * $perPage;
 
 // Construir condição WHERE
-$where  = ["categoria = 'estudos'"];
+$where  = ["categoria = 'custo-benefício'"];
 $params = [];
 
 if ($min_price > 0) {
@@ -59,39 +59,41 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header id="header">
         <nav class="nav">
             <ul class="nav__list">
-                <li><a href="main.php#hero">Início</a></li>
-                <li><a href="main.php#products">Destaques</a></li>
-                <li><a href="main.php#categories">Categorias</a></li>
-            </ul>
+                <ul class="nav__list">
+                    <li><a href="main.php#hero">Início</a></li>
+                    <li><a href="main.php#products">Destaques</a></li>
+                    <li><a href="main.php#categories">Categorias</a></li>
+                    <li><a href="produtos.php">CRUD</a></li>
+                </ul>
 
-            <!-- SEARCHBAR COM ÍCONE -->
-            <form class="search-inline" method="get" action="busca.php">
-                <i class="fas fa-search search-icon" onclick="this.closest('form').submit()" style="cursor:pointer"></i>
-                <input
-                    type="text"
-                    name="busca"
-                    placeholder="Buscar notebooks..."
-                    aria-label="Buscar"
-                    value="<?= htmlspecialchars($termoBusca ?? '') ?>"
-                    required>
-            </form>
+                <!-- SEARCHBAR COM ÍCONE -->
+                <form class="search-inline" method="get" action="busca.php">
+                    <i class="fas fa-search search-icon" onclick="this.closest('form').submit()" style="cursor:pointer"></i>
+                    <input
+                        type="text"
+                        name="busca"
+                        placeholder="Buscar notebooks..."
+                        aria-label="Buscar"
+                        value="<?= htmlspecialchars($termoBusca ?? '') ?>"
+                        required>
+                </form>
 
-            <!-- LOGIN/LOGOUT ORIGINAL -->
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="logout.php" id="logoutBtn" class="btn btn-logout">Sair</a>
-            <?php else: ?>
-                <a href="login.php" class="btn btn-login">Login</a>
-            <?php endif; ?>
+                <!-- LOGIN/LOGOUT ORIGINAL -->
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="logout.php" id="logoutBtn" class="btn btn-logout">Sair</a>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-login">Login</a>
+                <?php endif; ?>
 
-            <a href="carrinho.php"><button class="btn-carrinho" aria-label="Abrir carrinho"><i class="fas fa-shopping-cart"></i></button></a>
+                <a href="carrinho.php"><button class="btn-carrinho" aria-label="Abrir carrinho"><i class="fas fa-shopping-cart"></i></button></a>
         </nav>
     </header>
 
-    <section class="category-hero" style="background-image:url('images/bg-estudante.jpg')">
+    <section class="category-hero" style="background-image:url('images/bg-custobeneficio.jpg')">
         <div class="category-hero__overlay"></div>
         <div class="container category-hero__content">
-            <h1>Estudos</h1>
-            <p>Tecnologia e praticidade para acompanhar sua rotina de aprendizado.</p>
+            <h1>Custo Benefício</h1>
+            <p>Desempenho inteligente sem pesar no bolso.</p>
         </div>
     </section>
 
@@ -99,7 +101,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- PRODUTOS -->
         <section id="products" class="products">
-            <h2 class="section__title">Notebooks Para Estudos</h2>
+            <h2 class="section__title">Notebooks Custo Benefício</h2>
             <div class="layout--with-sidebar">
                 <!-- FILTRO (à esquerda) -->
                 <aside class="sidebar">

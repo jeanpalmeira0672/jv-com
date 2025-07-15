@@ -20,10 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'login
             exit;
         }
         // usuário normal
-
-        // Processa login
-
-        // usuário normal
         $stmt = $pdo->prepare("SELECT id, nome, senha FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -52,12 +48,11 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FéNotebooks.com - Admin</title>
+    <title>FéNotebooks.com</title>
     <link rel="icon" href="images/logo.png">
     <link rel="stylesheet" href="css/style2.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -80,7 +75,6 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="#hero">Início</a></li>
                 <li><a href="#products">Destaques</a></li>
                 <li><a href="#categories">Categorias</a></li>
-                <li><a href="produtos.php">CRUD</a></li>
             </ul>
 
             <!-- SEARCHBAR COM ÍCONE -->
@@ -95,7 +89,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     required>
             </form>
 
-            <!-- LOGIN/LOGOUT ORIGINAL -->
+            <!-- LOGIN/LOGOUT -->
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="logout.php" id="logoutBtn" class="btn btn-logout">Sair</a>
             <?php else: ?>
@@ -105,7 +99,6 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="carrinho.php"><button class="btn-carrinho" aria-label="Abrir carrinho"><i class="fas fa-shopping-cart"></i></button></a>
         </nav>
     </header>
-
     <!-- HERO -->
     <section id="hero" class="hero">
         <video class="hero__video" autoplay muted loop playsinline>
@@ -113,28 +106,20 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </video>
         <div class="hero__overlay"></div>
         <div class="hero__content container">
-            <h1>Administração dos Notebooks</h1>
-            <p>Gerencie produtos, categorias e configurações.</p>
+            <h1>Explore o futuro dos Notebooks</h1>
+            <p>Descubra tecnologia de ponta, desempenho e design elegante.</p>
             <a href="#products" class="btn--primary">Ver Produtos</a>
         </div>
     </section>
 
-    <!-- SEARCH MODAL -->
-    <div id="searchModal" class="modal">
-        <div class="modal__content">
-            <button class="modal__close" aria-label="Fechar">×</button>
-            <input type="search" placeholder="Buscar notebooks..." autofocus>
-        </div>
-    </div>
-
     <main>
-        <!-- PRODUCTS CAROUSEL -->
+        <!-- PRODUCTS -->
         <section id="products" class="products container">
             <h2 class="section__title">Destaques</h2>
             <div class="products__grid">
                 <?php foreach ($produtos as $p): ?>
                     <article class="card">
-                        <img src="<?= htmlspecialchars($p['imagem'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($p['nome'], ENT_QUOTES) ?>">
+                        <img src="uploads/<?= htmlspecialchars($p['imagem'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($p['nome'], ENT_QUOTES) ?>">
                         <div class="card__info">
                             <h3><?= htmlspecialchars($p['nome'], ENT_QUOTES) ?></h3>
                             <p class="price">R$ <?= number_format($p['preco'], 2, ',', '.') ?></p>
@@ -149,58 +134,58 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
 
-        <!-- CATEGORIES GRID -->
+        <!-- CATEGORIES -->
         <section id="categories" class="categories container">
             <h2 class="section__title">Categorias</h2>
             <div class="panels-container">
-                <a href="categoria-gamer_admin.php" class="panel" style="background-image: url('images/bg-gamer.jpg')">
+                <a href="categoria-gamer.php" class="panel" style="background-image: url('images/bg-gamer.jpg')">
                     <h3>Gamer</h3>
                 </a>
-                <a href="categoria-2em1_admin.php" class="panel" style="background-image: url('images/bg2em1.jpg')">
+                <a href="categoria-2em1.php" class="panel" style="background-image: url('images/bg2em1.jpg')">
                     <h3>2 em 1</h3>
                 </a>
-                <a href="categoria-premium_admin.php" class="panel" style="background-image: url('images/webp.jpg')">
+                <a href="categoria-premium.php" class="panel" style="background-image: url('images/webp.jpg')">
                     <h3>Premium</h3>
                 </a>
-                <a href="categoria-custo-beneficio_admin.php" class="panel" style="background-image: url('images/bg-custobeneficio.jpg')">
+                <a href="categoria-custo-beneficio.php" class="panel" style="background-image: url('images/bg-custobeneficio.jpg')">
                     <h3>Custo-Benefício</h3>
                 </a>
-                <a href="categoria-estudante_admin.php" class="panel" style="background-image: url('images/bg-estudante.jpg')">
+                <a href="categoria-estudante.php" class="panel" style="background-image: url('images/bg-estudante.jpg')">
                     <h3>Estudos</h3>
                 </a>
             </div>
         </section>
-
     </main>
 
     <!-- FOOTER -->
     <footer id="footer" class="footer">
-        <small>© 2025 Fé Notebooks. Todos os direitos reservados.</small>
+        <small>© 2025 Gazer Notebooks. Todos os direitos reservados.</small>
     </footer>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById('logoutBtn');
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Tem certeza?',
-                    text: 'Você será desconectado do painel admin.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sim, sair',
-                    cancelButtonText: 'Cancelar',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = btn.getAttribute('href');
-                    }
+            if (btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Tem certeza?',
+                        text: 'Tem certeza que deseja sair?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Cancelar',
+                        focusCancel: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            window.location.href = btn.getAttribute('href');
+                        }
+                    });
                 });
-            });
+            }
         });
     </script>
 </body>

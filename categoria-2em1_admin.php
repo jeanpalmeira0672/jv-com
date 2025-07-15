@@ -13,7 +13,7 @@ $perPage   = 18;
 $offset    = ($page - 1) * $perPage;
 
 // Construir condição WHERE
-$where  = ["categoria = 'estudos'"];
+$where  = ["categoria = '2 em 1'"];
 $params = [];
 
 if ($min_price > 0) {
@@ -62,6 +62,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="main.php#hero">Início</a></li>
                 <li><a href="main.php#products">Destaques</a></li>
                 <li><a href="main.php#categories">Categorias</a></li>
+                <li><a href="produtos.php">CRUD</a></li>
             </ul>
 
             <!-- SEARCHBAR COM ÍCONE -->
@@ -87,11 +88,11 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </nav>
     </header>
 
-    <section class="category-hero" style="background-image:url('images/bg-estudante.jpg')">
+    <section class="category-hero" style="background-image:url('images/bg2em1.jpg')">
         <div class="category-hero__overlay"></div>
         <div class="container category-hero__content">
-            <h1>Estudos</h1>
-            <p>Tecnologia e praticidade para acompanhar sua rotina de aprendizado.</p>
+            <h1>2 em 1</h1>
+            <p>Versatilidade na palma da sua mão: notebook e tablet quando você precisar.</p>
         </div>
     </section>
 
@@ -99,7 +100,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- PRODUTOS -->
         <section id="products" class="products">
-            <h2 class="section__title">Notebooks Para Estudos</h2>
+            <h2 class="section__title">Notebooks 2 em 1</h2>
             <div class="layout--with-sidebar">
                 <!-- FILTRO (à esquerda) -->
                 <aside class="sidebar">

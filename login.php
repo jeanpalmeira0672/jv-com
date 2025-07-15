@@ -1,82 +1,84 @@
 <?php
 session_start();
-require_once 'db.php'; // ajuste com suas credenciais de conexão PDO
+require_once 'db.php'; // conexão PDO
 
-$errors         = [];
-$success        = '';
-$actionExecuted = $_POST['action'] ?? '';  // capturamos a ação no topo
+// Redireciona se já estiver logado
+if (isset($_SESSION['user_id'])) {
+    if (($_SESSION['user_role'] ?? '') === 'admin') {
+        header('Location: main-admin.php');
+    } else {
+        header('Location: main.php');
+    }
+    exit;
+}
 
-// Processa cadastro e login
+$errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($actionExecuted === 'register') {
-        // === CADASTRO ===
-        $nome  = trim($_POST['nome']  ?? '');
-        $email = trim($_POST['email'] ?? '');
-        $senha = $_POST['senha']      ?? '';
+    // === LOGIN ===
+    if (isset($_POST['email-login']) && isset($_POST['senha-login'])) {
+        $email = trim($_POST['email-login']);
+        $senha = $_POST['senha-login'];
 
-        if (!$nome || !$email || !$senha) {
-            $errors[] = 'Preencha todos os campos do cadastro.';
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'E-mail inválido.';
-        }
-
-        if (empty($errors)) {
-            $hash = password_hash($senha, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)");
-            try {
-                $stmt->execute([
-                    ':nome'  => $nome,
-                    ':email' => $email,
-                    ':senha' => $hash
-                ]);
-                $success = 'Cadastro realizado com sucesso! Agora você pode fazer login.';
-            } catch (PDOException $e) {
-                if ($e->errorInfo[1] === 1062) {
-                    $errors[] = 'E-mail já cadastrado.';
-                } else {
-                    $errors[] = 'Erro ao cadastrar. Tente novamente.';
-                }
-            }
-        }
-    } elseif ($actionExecuted === 'login') {
-        // === LOGIN ===
-        $email = trim($_POST['email-login'] ?? '');
-        $senha = $_POST['senha-login']      ?? '';
-
-        if (!$email || !$senha) {
+        if ($email === '' || $senha === '') {
             $errors[] = 'Preencha e-mail e senha.';
         } else {
-            // Caso especial: administrador
+            // Login de admin hardcoded
             if ($email === 'admin@gmail.com' && $senha === 'admin') {
+                $_SESSION['user_id']   = 0;
+                $_SESSION['user_name'] = 'Administrador';
+                $_SESSION['user_role'] = 'admin';
                 header('Location: main-admin.php');
                 exit;
             }
 
-            // Usuário normal
-            $stmt = $pdo->prepare("SELECT id, nome, senha FROM usuarios WHERE email = :email");
-            $stmt->execute([':email' => $email]);
-            $user = $stmt->fetch();
+            // Login normal
+            $stmt = $pdo->prepare("SELECT id, nome, senha FROM usuarios WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($senha, $user['senha'])) {
                 $_SESSION['user_id']   = $user['id'];
                 $_SESSION['user_name'] = $user['nome'];
-                $success = 'Login bem-sucedido!';
+                $_SESSION['user_role'] = 'user';
+
+                $tipoAviso = 'success';
+                $mensagem = 'Login realizado com sucesso!';
+                $actionExecuted = 'login';
             } else {
                 $errors[] = 'E-mail ou senha incorretos.';
             }
         }
+
+        // === CADASTRO ===
+    } elseif (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha'])) {
+        $nome  = trim($_POST['nome']);
+        $email = trim($_POST['email']);
+        $senha = $_POST['senha'];
+
+        if ($nome === '' || $email === '' || $senha === '') {
+            $errors[] = 'Preencha todos os campos.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'E-mail inválido.';
+        } else {
+            $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = ?");
+            $stmt->execute([$email]);
+            if ($stmt->fetch()) {
+                $errors[] = 'E-mail já cadastrado.';
+            } else {
+                $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+                $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+                $stmt->execute([$nome, $email, $senhaHash]);
+
+                $tipoAviso = 'success';
+                $mensagem = 'Cadastro realizado com sucesso!';
+                $actionExecuted = 'register';
+            }
+        }
     }
 }
-
-// Prepara variáveis para o SweetAlert2
-if (!empty($success)) {
-    $tipoAviso = 'success';
-    $mensagem  = $success;
-} elseif (!empty($errors)) {
-    $tipoAviso = 'error';
-    $mensagem  = implode("\n", $errors);
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -84,8 +86,8 @@ if (!empty($success)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gazer.com</title>
-    <link rel="icon" href="images/logoprojetojv1.png">
+    <title>FéNotebooks.com</title>
+    <link rel="icon" href="images/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- SweetAlert2 CSS -->
